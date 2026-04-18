@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ari Sastra — IT Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0e13;
+    --bg2: #0f1520;
+    --bg3: #141d2b;
+    --bg4: #1a2535;
+    --green: #00d97e;
+    --green-dim: #00a85e;
+    --green-glow: rgba(0,217,126,0.08);
+    --blue: #4fc3f7;
+    --amber: #ffc107;
+    --red: #ff5252;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --border: rgba(0,217,126,0.15);
+    --border2: rgba(255,255,255,0.06);
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,14,19,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-brand span { color: var(--text3); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--green); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,217,126,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,217,126,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,217,126,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+  }
+
+  .hero-prompt {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-prompt::before {
+    content: '>';
+    color: var(--green);
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 .name { color: var(--text); }
+  .hero h1 .accent { color: var(--green); }
+
+  .hero-title {
+    font-family: var(--mono);
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: var(--text2);
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-title .cursor {
+    display: inline-block;
+    width: 10px; height: 1.1em;
+    background: var(--green);
+    margin-left: 4px;
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 580px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+    border-left: 2px solid var(--green);
+    padding-left: 1.25rem;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--green);
+    background: var(--green-glow);
+    letter-spacing: 0.06em;
+  }
+
+  .badge.dim { color: var(--text3); border-color: var(--border2); background: transparent; }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 10px 24px;
+    border: 1px solid var(--green);
+    background: transparent;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn:hover { background: var(--green-glow); }
+
+  .btn.secondary {
+    border-color: var(--border2);
+    color: var(--text2);
+  }
+
+  .btn.secondary:hover { border-color: var(--text3); color: var(--text); }
+
+  /* SECTIONS */
+  section {
+    padding: 5rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 200px;
+  }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3rem;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media(max-width:700px){ .about-grid { grid-template-columns: 1fr; } }
+
+  .about-text p {
+    color: var(--text2);
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  .about-text p strong { color: var(--green); font-weight: 500; }
+
+  .terminal-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .terminal-header {
+    background: var(--bg3);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #ffbd2e; }
+  .dot.g { background: #28ca41; }
+
+  .terminal-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-left: 8px;
+  }
+
+  .terminal-body {
+    padding: 1.25rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 2;
+  }
+
+  .t-line { display: flex; gap: 8px; }
+  .t-prompt { color: var(--green); }
+  .t-key { color: var(--blue); }
+  .t-val { color: var(--text2); }
+  .t-comment { color: var(--text3); }
+  .t-string { color: var(--amber); }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .project-card:hover { border-color: var(--border); background: var(--bg3); }
+  .project-card:hover::before { transform: scaleX(1); }
+
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .project-grade {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    background: var(--green-glow);
+    border: 1px solid var(--border);
+    color: var(--green);
+    border-radius: 2px;
+  }
+
+  .project-card h3 {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .project-card p {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    background: var(--bg4);
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    border-radius: 2px;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: gap 0.2s;
+  }
+
+  .project-link:hover { gap: 10px; }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .skill-group {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .skill-group h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skill-list li {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .skill-list li::before {
+    content: '▸';
+    color: var(--green);
+    font-size: 10px;
+  }
+
+  /* CONTACT */
+  .contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media(max-width:700px){ .contact-wrapper { grid-template-columns: 1fr; } }
+
+  .contact-text p { color: var(--text2); line-height: 1.8; margin-bottom: 1rem; }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.75rem 1rem;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: border-color 0.2s;
+    color: var(--text);
+  }
+
+  .contact-item:hover { border-color: var(--border); }
+
+  .contact-item .ci-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .contact-item .ci-val {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .contact-item:hover .ci-val { color: var(--green); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border2);
+    padding: 2rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  footer span { color: var(--green); }
+
+  /* FADE IN */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand"><span>~/</span>ari-sastra</div>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-prompt">whoami</div>
+    <h1>
+      <span class="name">Ari</span><span class="accent"> Sastra</span>
+    </h1>
+    <div class="hero-title">
+      IT Support &nbsp;/&nbsp; Helpdesk &nbsp;/&nbsp; Cybersecurity<span class="cursor"></span>
+    </div>
+    <p class="hero-desc">
+      RMIT IT graduate based in Melbourne. I build things in home labs, configure servers, write firewall rules, and deploy real cloud infrastructure. Currently seeking an IT Support or Helpdesk role as a foundation toward a cybersecurity career.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">Windows Server 2022</span>
+      <span class="badge">Active Directory</span>
+      <span class="badge">AWS</span>
+      <span class="badge">Kali Linux</span>
+      <span class="badge">iptables</span>
+      <span class="badge">Freshdesk</span>
+      <span class="badge dim">Melbourne, VIC</span>
+      <span class="badge dim">Open to work</span>
+    </div>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn">&#x25B6; view projects</a>
+      <a href="Ari_Sastra_IT_Support_CV.docx" download class="btn secondary">&#x2193; download cv</a>
+      <a href="#contact" class="btn secondary">&#x2192; get in touch</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 // ABOUT</div>
+  <div class="section-title">A bit about me</div>
+  <div class="about-grid fade-in">
+    <div class="about-text">
+      <p>I graduated from <strong>RMIT University</strong> with a Bachelor of IT and a Diploma of IT. Most of what I know came from building things — not just reading about them.</p>
+      <p>My home lab runs <strong>Windows Server 2022 on Hyper-V</strong> with a full Active Directory setup — OUs, user accounts, security groups, password resets, account management. I built it because I wanted the experience, not because I had to.</p>
+      <p>During my degree I worked with <strong>real AWS infrastructure</strong> (IAM, KMS, S3, EC2), configured firewalls on <strong>Kali Linux</strong>, and studied cryptography, threat analysis, and risk management — all while working part-time in busy, people-facing environments.</p>
+      <p>Long-term I want to move into <strong>cybersecurity</strong> — specifically SOC analysis and threat detection. But I believe in building a proper foundation first. IT support is where that starts.</p>
+    </div>
+    <div class="terminal-card">
+      <div class="terminal-header">
+        <div class="dot r"></div>
+        <div class="dot y"></div>
+        <div class="dot g"></div>
+        <span class="terminal-title">profile.json</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-comment">{</span></div>
+        <div class="t-line"><span class="t-key">&nbsp;&nbsp;"name"</span><span class="t-comment">:</span> <span class="t-string">"Ari Sastra"</span><span class="t-comment">,</span></div>
+        <div class="t-line"><span class="t-key">&nbsp;&nbsp;"location"</span><span class="t-comment">:</span> <span class="t-string">"Melbourne, VIC"</span><span class="t-comment">,</span></div>
+        <div class="t-line"><span class="t-key">&nbsp;&nbsp;"degree"</span><span class="t-comment">:</span> <span class="t-string">"B.IT — RMIT"</span><span class="t-comment">,</span></div>
+        <div class="t-line"><span class="t-key">&nbsp;&nbsp;"target_role"</span><span class="t-comment">:</span> <span class="t-string">"IT Support / Helpdesk"</span><span class="t-comment">,</span></div>
+        <div class="t-line"><span class="t-key">&nbsp;&nbsp;"goal"</span><span class="t-comment">:</span> <span class="t-string">"SOC Analyst"</span><span class="t-comment">,</span></div>
+        <div class="t-line"><span class="t-key">&nbsp;&nbsp;"languages"</span><span class="t-comment">: [</span></div>
+        <div class="t-line"><span class="t-val">&nbsp;&nbsp;&nbsp;&nbsp;"English"</span><span class="t-comment">,</span> <span class="t-val">"Bahasa Indonesia"</span></div>
+        <div class="t-line"><span class="t-comment">&nbsp;&nbsp;],</span></div>
+        <div class="t-line"><span class="t-key">&nbsp;&nbsp;"available"</span><span class="t-comment">:</span> <span class="t-prompt">true</span></div>
+        <div class="t-line"><span class="t-comment">}</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">02 // PROJECTS</div>
+  <div class="section-title">What I've built</div>
+  <div class="projects-grid fade-in">
+
+    <div class="project-card">
+      <div class="project-tag">PERSONAL LAB <span class="project-grade">2026</span></div>
+      <h3>Active Directory Home Lab</h3>
+      <p>Built a Windows Server 2022 domain controller from scratch using Hyper-V. Configured 5 OUs, user accounts, security groups, and practised real helpdesk tasks: password resets, account disabling, access control, group policy.</p>
+      <div class="project-tags">
+        <span class="tag">Windows Server 2022</span>
+        <span class="tag">Active Directory</span>
+        <span class="tag">Hyper-V</span>
+        <span class="tag">DNS/DHCP</span>
+      </div>
+      <a href="https://github.com/sastraw999/ad-lab-home-project" target="_blank" class="project-link">&#x2192; github.com/sastraw999/ad-lab-home-project</a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag">PERSONAL LAB <span class="project-grade">2026</span></div>
+      <h3>Helpdesk Simulation — Freshdesk</h3>
+      <p>Simulated a live L1 helpdesk environment using Freshdesk. Logged, triaged, and resolved 5 realistic tickets covering hardware faults, access issues, and software problems. Practised escalation decisions and incident documentation.</p>
+      <div class="project-tags">
+        <span class="tag">Freshdesk</span>
+        <span class="tag">Ticketing</span>
+        <span class="tag">L1 Support</span>
+        <span class="tag">Escalation</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag">RMIT — CLOUD SECURITY <span class="project-grade">DISTINCTION 74</span></div>
+      <h3>AWS Cloud Security Infrastructure</h3>
+      <p>Deployed IAM user accounts, AWS KMS encryption keys per department, and SSE-KMS encrypted S3 buckets. Set up an OpenVPN server on EC2, configured via SSH, with user and admin login demonstration.</p>
+      <div class="project-tags">
+        <span class="tag">AWS IAM</span>
+        <span class="tag">KMS</span>
+        <span class="tag">S3</span>
+        <span class="tag">EC2</span>
+        <span class="tag">OpenVPN</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag">RMIT — INTRO CYBERSECURITY <span class="project-grade">HD 81</span></div>
+      <h3>Firewall Config + Cryptography Lab</h3>
+      <p>Configured 10 iptables rule sets on Kali Linux as root — stateful filtering, ICMP control, subnet-based access, SSH allow-listing. Also implemented CBC block cipher encryption and Diffie-Hellman MitM attack simulation.</p>
+      <div class="project-tags">
+        <span class="tag">iptables</span>
+        <span class="tag">Kali Linux</span>
+        <span class="tag">Cryptography</span>
+        <span class="tag">Diffie-Hellman</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag">RMIT — DIGITAL BUSINESS SECURITY <span class="project-grade">DISTINCTION 71</span></div>
+      <h3>E-Commerce Security Risk Assessment</h3>
+      <p>Identified 7 security risks for a retail company transitioning online. Applied ALE quantitative modelling and recommended prioritised control strategies (encryption, WAF, DDoS protection, secure payment gateway) within a $19,600 budget.</p>
+      <div class="project-tags">
+        <span class="tag">Risk Assessment</span>
+        <span class="tag">ALE Model</span>
+        <span class="tag">GRC</span>
+        <span class="tag">Security Strategy</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-tag">RMIT — ICT INFOSEC <span class="project-grade">CREDIT 63</span></div>
+      <h3>Watering Hole Attack Analysis</h3>
+      <p>Full lifecycle analysis of a Watering Hole Attack targeting a pharmaceutical company. Covered reconnaissance (theHarvester), scanning (Nmap, Nikto), payload deployment (MSFvenom), APT/zero-day context, and mitigation strategies.</p>
+      <div class="project-tags">
+        <span class="tag">theHarvester</span>
+        <span class="tag">Nmap</span>
+        <span class="tag">Nikto</span>
+        <span class="tag">Threat Analysis</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">03 // SKILLS</div>
+  <div class="section-title">Technical skills</div>
+  <div class="skills-grid fade-in">
+
+    <div class="skill-group">
+      <h4>SUPPORT & SYSTEMS</h4>
+      <ul class="skill-list">
+        <li>Windows 10/11 — troubleshooting, break-fix</li>
+        <li>Windows Server 2022 — AD, DNS, DHCP</li>
+        <li>Active Directory — user & access management</li>
+        <li>Hardware — desktops, laptops, printers</li>
+        <li>Microsoft 365 — Outlook, Teams, SharePoint</li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <h4>NETWORKING & SECURITY</h4>
+      <ul class="skill-list">
+        <li>TCP/IP, DNS, DHCP, IP configuration</li>
+        <li>Wi-Fi troubleshooting & connectivity</li>
+        <li>iptables firewall configuration</li>
+        <li>Kali Linux — security tools & terminal</li>
+        <li>OpenVPN — server setup & configuration</li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <h4>CLOUD & VIRTUALISATION</h4>
+      <ul class="skill-list">
+        <li>AWS IAM — users, roles, policies</li>
+        <li>AWS KMS — key creation & access control</li>
+        <li>AWS S3 — encrypted bucket management</li>
+        <li>AWS EC2 — instance launch & SSH access</li>
+        <li>Hyper-V — VM creation & management</li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <h4>TOOLS & PLATFORMS</h4>
+      <ul class="skill-list">
+        <li>Freshdesk — ticketing & incident logging</li>
+        <li>GitHub — version control & documentation</li>
+        <li>POS systems — operation & troubleshooting</li>
+        <li>Nmap, Nikto — network scanning</li>
+        <li>Python & HTML/CSS — basic scripting</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">04 // CONTACT</div>
+  <div class="section-title">Get in touch</div>
+  <div class="contact-wrapper fade-in">
+    <div class="contact-text">
+      <p>I'm actively looking for IT Support or Helpdesk roles in Melbourne — L1 or L2. Happy to chat about opportunities, internships, or just to connect.</p>
+      <p>If you're a recruiter or hiring manager, feel free to reach out directly via email or LinkedIn. I respond promptly.</p>
+      <br>
+      <a href="Ari_Sastra_IT_Support_CV.docx" download class="btn" style="display:inline-flex;">&#x2193; download my cv</a>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:sastraw999@outlook.com" class="contact-item">
+        <span class="ci-label">EMAIL</span>
+        <span class="ci-val">sastraw999@outlook.com</span>
+      </a>
+      <a href="tel:0432507940" class="contact-item">
+        <span class="ci-label">PHONE</span>
+        <span class="ci-val">0432 507 940</span>
+      </a>
+      <a href="https://linkedin.com/in/arisastra" target="_blank" class="contact-item">
+        <span class="ci-label">LINKEDIN</span>
+        <span class="ci-val">linkedin.com/in/arisastra</span>
+      </a>
+      <a href="https://github.com/sastraw999" target="_blank" class="contact-item">
+        <span class="ci-label">GITHUB</span>
+        <span class="ci-val">github.com/sastraw999</span>
+      </a>
+      <div class="contact-item" style="cursor:default;">
+        <span class="ci-label">LOCATION</span>
+        <span class="ci-val">Melbourne, VIC — open to relocation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Ari Sastra</span> &nbsp;·&nbsp; Melbourne, VIC &nbsp;·&nbsp; Built with code, not a template
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  const titles = [
+    'IT Support Specialist_',
+    'Helpdesk Technician_',
+    'Systems Administrator_',
+    'Cybersecurity Learner_'
+  ];
+  let ti = 0, ci = 0, deleting = false;
+  const el = document.querySelector('.hero-title');
+
+  function type() {
+    const current = titles[ti];
+    if (!deleting) {
+      ci++;
+      el.innerHTML = current.slice(0, ci) + '<span class="cursor"></span>';
+      if (ci === current.length) { deleting = true; setTimeout(type, 2000); return; }
+    } else {
+      ci--;
+      el.innerHTML = current.slice(0, ci) + '<span class="cursor"></span>';
+      if (ci === 0) { deleting = false; ti = (ti + 1) % titles.length; }
+    }
+    setTimeout(type, deleting ? 40 : 80);
+  }
+  type();
+</script>
+
+</body>
+</html>
